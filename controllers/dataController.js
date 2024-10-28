@@ -251,7 +251,7 @@ const getDate = async (req, res, next) => {
                 timeDelta = 1; // Default for all other devices
             }
             
-            res.status(200).json({ message: 'Data processed successfully', data: {dataCharts, timeDelta } });
+            res.status(200).json({ message: 'Data processed successfully', data: {dataCharts, timeDelta, dateOrg } });
         } else {
             res.status(400);
             next({ message: "Either values are empty" });
