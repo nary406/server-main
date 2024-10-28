@@ -161,7 +161,7 @@ const getDate = async (req, res, next) => {
                 }
                 const t = new Date((timestamp  ) * 1000);
 
-                const dateForGraph = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }).format(t);
+                const dateForGraph = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit',timeZone:"Asia/Kolkata", hour12: false }).format(t);
                 let dateForGraphVal = "";
                 if (dateForGraph.split(':')[0] === 24) {
                     dateForGraphVal = "00:" + dateForGraph.split(':')[1];
@@ -251,7 +251,7 @@ const getDate = async (req, res, next) => {
                 timeDelta = 1; // Default for all other devices
             }
             
-            res.status(200).json({ message: 'Data processed successfully', data: {dataCharts, timeDelta, dateOrg } });
+            res.status(200).json({ message: 'Data processed successfully', data: {dataCharts, timeDelta,  } });
         } else {
             res.status(400);
             next({ message: "Either values are empty" });
