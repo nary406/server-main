@@ -335,7 +335,9 @@ const postDB = async (req, res, next) => {
                     }
    
                     const adjustedTimestamp = timestamp  ;
-                    const dateForGraph = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(adjustedTimestamp * 1000));
+                     const dateForGraph = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit',timeZone:"Asia/Kolkata", hour12: false }).format(new Date(adjustedTimestamp * 1000));
+               
+    
                     const currentTime = parseInt(dateForGraph.split(':')[0], 10);
 
  
@@ -368,6 +370,7 @@ const postDB = async (req, res, next) => {
     //                     p3Values.push(inverterPower);
     //                     timeValues.push(dateForGraph);
                     }
+
     
                     return {
                         ccAxisXValue: dateForGraph,
