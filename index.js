@@ -5,8 +5,6 @@ const errorHandler = require('./middlewares/errorHandler');
 const expressApp = express();
 const PORT = process.env.PORT || 1337;
 
-expressApp.use(express.json());
-
 // Define allowed origins for CORS
 const allowedOrigins = ['http://admin.re4billion.ai', 'http://localhost:3000'];
 
@@ -29,18 +27,8 @@ const corsOptions = {
 // Apply CORS middleware globally
 expressApp.use(cors(corsOptions));
 
-// Add a custom middleware to manually set CORS headers on all responses
-expressApp.use((req, res, next) => {
-    const origin = allowedOrigins.includes(req.headers.origin) ? req.headers.origin : '';
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    next();
-});
-
 // Handle routes
-expressApp.use('/', require('./routes/userRoutes')); 
+expressApp.use('/', require('./routes/userRoutes'));
 expressApp.use('/admin', require('./routes/dataRoutes'));
 
 // Handle preflight requests for all routes
