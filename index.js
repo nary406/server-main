@@ -18,13 +18,13 @@ const corsOptions = {
             callback(new Error('Not allowed by CORS'));
         }
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Length', 'X-JSON'],
     optionsSuccessStatus: 200
 };
 
 expressApp.use(cors(corsOptions));
-
 expressApp.options('*', cors(corsOptions));
 
 expressApp.use('/', require('./routes/userRoutes')); 
