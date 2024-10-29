@@ -13,8 +13,10 @@ const getOne = (req, res) => {
 //@params selectedItem, Date
 //@POST request
 const getUser = async (req, res, next) => {
+    
     try {
         const { email, password } = req.body;
+      
         await connect();
         const user = await Admin.findOne({ email: email });
         if (!user) {
@@ -33,6 +35,7 @@ const getUser = async (req, res, next) => {
         res.status(200).json({ message: "Login successful", data: { token, role, location }});
     } catch (err) {
         res.status(500);
+        
         next(err);
     }
 };
