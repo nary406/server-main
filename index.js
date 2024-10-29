@@ -7,10 +7,12 @@ const PORT = process.env.PORT || 1337;
 
 expressApp.use(express.json());
 
+// Define allowed origins for CORS
 const allowedOrigins = ['http://admin.re4billion.ai', 'http://localhost:3000'];
 
+// CORS configuration
 const corsOptions = {
-    origin: (origin, callback) => {
+    origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -20,43 +22,34 @@ const corsOptions = {
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials:true,
-    optionsSuccessStatus: 200
+    credentials: true,
+    optionsSuccessStatus: 200,
 };
 
+// Apply CORS middleware globally
 expressApp.use(cors(corsOptions));
 
-
-
-
-
-// Handle preflight OPTIONS requests across all routes
-expressApp.options('*', (req, res) => {
-    res.set({
-        'Access-Control-Allow-Origin': allowedOrigins.includes(req.headers.origin) ? req.headers.origin : '',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Credentials': 'true',
-    });
-    res.sendStatus(200);
-});
-
-// Manually add CORS headers for non-preflight requests in case Vercel omits them
+// Add a custom middleware to manually set CORS headers on all responses
 expressApp.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', allowedOrigins.includes(req.headers.origin) ? req.headers.origin : '');
+    const origin = allowedOrigins.includes(req.headers.origin) ? req.headers.origin : '';
+    res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     next();
 });
 
-
-
+// Handle routes
 expressApp.use('/', require('./routes/userRoutes')); 
 expressApp.use('/admin', require('./routes/dataRoutes'));
 
+// Handle preflight requests for all routes
+expressApp.options('*', cors(corsOptions));
+
+// Error handler middleware
 expressApp.use(errorHandler);
 
+// Start server
 expressApp.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
