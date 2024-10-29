@@ -7,10 +7,11 @@ const PORT = process.env.PORT || 1337;
 
 expressApp.use(express.json());
 
-const allowedOrigins = ['http://admin.re4billion.ai', 'http://localhost:3000'];
+const allowedOrigins = ['https://admin.re4billion.ai', 'http://localhost:3000'];
 
 const corsOptions = {
     origin: (origin, callback) => {
+        // Allow requests without an origin
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -20,8 +21,7 @@ const corsOptions = {
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Content-Length', 'X-JSON'],
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200 // For legacy browser support
 };
 
 expressApp.use(cors(corsOptions));
