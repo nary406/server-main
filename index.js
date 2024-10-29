@@ -24,19 +24,24 @@ const corsOptions = {
     optionsSuccessStatus: 200 // For legacy browser support
 };
 
+// Apply CORS middleware before routes
 expressApp.use(cors(corsOptions));
-expressApp.options('*', cors(corsOptions));
+expressApp.options('*', cors(corsOptions)); // Handle preflight requests
 
+// Debugging log for request origins
 expressApp.use((req, res, next) => {
     console.log(`Request Origin: ${req.get('Origin')}`);
     next();
 });
 
+// Define routes
 expressApp.use('/', require('./routes/userRoutes')); 
 expressApp.use('/admin', require('./routes/dataRoutes'));
 
+// Error handling middleware
 expressApp.use(errorHandler);
 
+// Start server
 expressApp.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
