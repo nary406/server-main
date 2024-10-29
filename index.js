@@ -12,7 +12,7 @@ const allowedOrigins = ['https://admin.re4billion.ai', 'http://localhost:3000'];
 const corsOptions = {
     origin: (origin, callback) => {
         // Allow requests without an origin
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             console.error(`Blocked by CORS: ${origin}`);
