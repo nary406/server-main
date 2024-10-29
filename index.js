@@ -27,6 +27,11 @@ const corsOptions = {
 expressApp.use(cors(corsOptions));
 expressApp.options('*', cors(corsOptions));
 
+expressApp.use((req, res, next) => {
+    console.log(`Request Origin: ${req.get('Origin')}`);
+    next();
+});
+
 expressApp.use('/', require('./routes/userRoutes')); 
 expressApp.use('/admin', require('./routes/dataRoutes'));
 
